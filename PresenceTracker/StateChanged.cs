@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace PresenceTracker
 {
@@ -43,6 +45,30 @@ namespace PresenceTracker
         {
             _time = time;
             _newState = newState;
+        }
+
+        public XElement serialize()
+        {
+            XElement e = new XElement("StateChanged");
+            e.SetAttributeValue("time", Time);
+            e.SetAttributeValue("newState", NewState);
+            return e;
+        }
+
+        public static StateChanged deserialize(XElement e)
+        {
+            StateChanged sc = new StateChanged();
+            sc.Time = DateTime.Parse(e.Attribute("time").ToString());
+            sc.NewState = (State)Enum.Parse(typeof(State), e.Attribute("newState").ToString());
+            return sc;
+        }
+
+        public static StateChanged deserialize(XmlReader reader)
+        {
+            StateChanged sc = new StateChanged();
+            sc.Time = DateTime.Parse(reader.GetAttribute("time"));
+            sc.NewState = (State)Enum.Parse(typeof(State), reader.GetAttribute("newState"));
+            return sc;
         }
 
         protected void OnPropertyChanged(string name)
