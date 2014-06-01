@@ -110,7 +110,7 @@ namespace PresenceTracker
             if (!File.Exists(dataLocation + "/statechanges.xmlpart"))
                 File.Create(dataLocation + "/statechanges.xmlpart").Close();
         }
-        /*System.Environment.MachineName*/
+
         private void loadMessages()
         {
             XmlReaderSettings settings = new XmlReaderSettings();
