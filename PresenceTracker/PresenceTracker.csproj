@@ -59,6 +59,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataAppender.cs" />
+    <Compile Include="DateFormatConverter.cs" />
     <Compile Include="NotifyIconViewModel.cs" />
     <Compile Include="State.cs" />
     <Compile Include="StateChanged.cs" />
