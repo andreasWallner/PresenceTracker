@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PresenceTracker"
-        Title="Presence Tracker" Height="348" Width="486">
+        Title="Presence Tracker" Height="348" Width="486"
+        Icon="./Resources/appbar.calendar.ico">
     <Window.Resources>
         <!-- design time test data -->
         <StateChangedCollection xmlns="clr-namespace:PresenceTracker" x:Key="messages">
