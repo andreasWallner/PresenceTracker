@@ -16,38 +16,22 @@ namespace PresenceTracker
     {
         public readonly string dataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/PresenceTracker";
 
+        public PresenceTrackerModel Data;
         private TaskbarIcon _notifyIcon;
-        private DataAppender _appender;
-        private SystemEventCollector _sysEventCollector;
-
-        private ObservableCollection<StateChanged> _messages = new ObservableCollection<StateChanged>();
-        public ObservableCollection<StateChanged> messages { get { return _messages; } }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             checkSaveLocations();
-            loadMessages();
+
+            Data = new PresenceTrackerModel(dataLocation);
+            Data.addStateChange(DateTime.Now, State.AppStart);
 
             //create the notifyicon (it's a resource declared in NotifyIconResources.xaml
             _notifyIcon = (TaskbarIcon)FindResource("NotifyIcon");
-            _appender = new DataAppender(_messages, dataLocation + "/statechanges.xmlpart");
-            _sysEventCollector = new SystemEventCollector();
-            _sysEventCollector.SessionEvent += SysEventCollector_SessionEvent;
-
-            StateChanged sc = new StateChanged(DateTime.Now, State.AppStart));
-            messages.Insert(0, sc);
-            _appender.append(sc);
         }
-
-        private void SysEventCollector_SessionEvent(object sender, SystemEventArgs e)
-        {
-            StateChanged sc = new StateChanged(DateTime.Now, e.newState);
-            messages.Insert(0, sc);
-            _appender.append(sc);
-        }
-
+        
         protected override void OnExit(ExitEventArgs e)
         {
             _notifyIcon.Dispose();
@@ -76,38 +60,6 @@ namespace PresenceTracker
             }
             if (!File.Exists(dataLocation + "/statechanges.xmlpart"))
                 File.Create(dataLocation + "/statechanges.xmlpart").Close();
-        }
-
-        private void loadMessages()
-        {
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.DtdProcessing = DtdProcessing.Parse;
-            DateTime now = DateTime.Now;
-            TimeSpan limit = new TimeSpan(10,0,0,0);
-            List<StateChanged> list = new List<StateChanged>();
-
-            using (XmlReader reader = XmlReader.Create(dataLocation + "/presence.xml", settings))
-            {
-                while (reader.Read())
-                {
-                    switch (reader.NodeType)
-                    {
-                        case XmlNodeType.Element:
-                            if (reader.Name == "StateChanged")
-                            {
-                                StateChanged sc = StateChanged.deserialize(reader);
-                                if (sc.Time - now < limit)
-                                    list.Add(sc);
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            list.Reverse();
-            foreach (var e in list)
-                _messages.Add(e);
         }
     }
 }

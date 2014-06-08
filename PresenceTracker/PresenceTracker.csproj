@@ -64,7 +64,9 @@
     <Compile Include="DataAppender.cs" />
     <Compile Include="DateFormatConverter.cs" />
     <Compile Include="EventExtension.cs" />
+    <Compile Include="MidnightNotifier.cs" />
     <Compile Include="NotifyIconViewModel.cs" />
+    <Compile Include="PresenceTrackerModel.cs" />
     <Compile Include="State.cs" />
     <Compile Include="StateChanged.cs" />
     <Compile Include="SystemEventCollector.cs" />

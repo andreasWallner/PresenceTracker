@@ -1,5 +1,5 @@
 - [x] group by days
-- [ ] remove days older than the limit from listing
+- [x] remove days older than the limit from listing
 - [ ] make folders/limit etc configurable via settings
 - [ ] show some calculations
 - [ ] make it possible to delete entries from listing

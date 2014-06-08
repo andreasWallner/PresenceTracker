@@ -21,7 +21,7 @@ namespace PresenceTracker
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = App.Current;
+            this.DataContext = ((App)App.Current).Data;
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
