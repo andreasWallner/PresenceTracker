@@ -12,7 +12,7 @@
             <StateChanged Time="3/3/10 08:23 PM" NewState="Logoff" />
             <StateChanged Time="4/3/14 02:21 PM" NewState="AppStart"/>
         </StateChangedCollection>
-        <CollectionViewSource x:Key="messagesByDay" Source="{Binding Source={StaticResource messages}}">
+        <CollectionViewSource x:Key="messagesByDay" Source="{Binding messages}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Time">
                     <PropertyGroupDescription.Converter>
