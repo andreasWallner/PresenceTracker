@@ -10,15 +10,18 @@ using System.Collections.Generic;
 
 namespace PresenceTracker
 {
+
+
     public partial class App : Application
     {
-        private TaskbarIcon notifyIcon;
+        public readonly string dataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/PresenceTracker";
+
+        private TaskbarIcon _notifyIcon;
+        private DataAppender _appender;
+        private SystemEventCollector _sysEventCollector;
 
         private ObservableCollection<StateChanged> _messages = new ObservableCollection<StateChanged>();
         public ObservableCollection<StateChanged> messages { get { return _messages; } }
-        private DataAppender _appender;
-
-        public readonly string dataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/PresenceTracker";
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -27,64 +30,28 @@ namespace PresenceTracker
             checkSaveLocations();
             loadMessages();
 
-            SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
-            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
-
             //create the notifyicon (it's a resource declared in NotifyIconResources.xaml
-            notifyIcon = (TaskbarIcon)FindResource("NotifyIcon");
-
+            _notifyIcon = (TaskbarIcon)FindResource("NotifyIcon");
             _appender = new DataAppender(_messages, dataLocation + "/statechanges.xmlpart");
+            _sysEventCollector = new SystemEventCollector();
+            _sysEventCollector.SessionEvent += SysEventCollector_SessionEvent;
 
-            messages.Insert(0, new StateChanged(DateTime.Now, State.AppStart));
+            StateChanged sc = new StateChanged(DateTime.Now, State.AppStart));
+            messages.Insert(0, sc);
+            _appender.append(sc);
+        }
+
+        private void SysEventCollector_SessionEvent(object sender, SystemEventArgs e)
+        {
+            StateChanged sc = new StateChanged(DateTime.Now, e.newState);
+            messages.Insert(0, sc);
+            _appender.append(sc);
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            notifyIcon.Dispose(); //the icon would clean up automatically, but this is cleaner
+            _notifyIcon.Dispose();
             base.OnExit(e);
-        }
-
-        protected void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
-        {
-            State s;
-            switch (e.Reason)
-            {
-                case SessionEndReasons.Logoff:
-                    s = State.Logoff;
-                    break;
-                case SessionEndReasons.SystemShutdown:
-                    s = State.Shutdown;
-                    break;
-                default:
-                    s = State.Unknown;
-                    break;
-            }
-            messages.Insert(0, new StateChanged(DateTime.Now, s));
-        }
-
-        protected void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
-        {
-            State s;
-            switch (e.Reason)
-            {
-                case SessionSwitchReason.SessionLock:
-                    s = State.Lock;
-                    break;
-                case SessionSwitchReason.SessionLogoff:
-                    s = State.Logoff;
-                    break;
-                case SessionSwitchReason.SessionLogon:
-                    s = State.Logon;
-                    break;
-                case SessionSwitchReason.SessionUnlock:
-                    s = State.Unlock;
-                    break;
-                default:
-                    s = State.Unknown;
-                    break;
-            }
-
-            messages.Insert(0, new StateChanged(DateTime.Now, s));
         }
 
         protected void checkSaveLocations()

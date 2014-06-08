@@ -17,7 +17,9 @@ namespace PresenceTracker
         Lock,
         Unlock,
         Unknown,
-        AppStart
+        AppStart,
+        Resume,
+        Suspend
     }
 
     [ValueConversion(typeof(State), typeof(SolidColorBrush))]

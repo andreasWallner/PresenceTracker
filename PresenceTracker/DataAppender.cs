@@ -14,23 +14,16 @@ namespace PresenceTracker
 
         public DataAppender(INotifyCollectionChanged sender, string filename)
         {
-            sender.CollectionChanged += sender_CollectionChanged;
             _filename = filename;
         }
 
-        void sender_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public void append(dynamic e)
         {
-            if (e.NewItems.Count != 0)
+            using (StreamWriter sw = File.AppendText(_filename))
             {
-                using (StreamWriter sw = File.AppendText(_filename))
-                {
-                    foreach (var item in e.NewItems)
-                    {
-                        StateChanged sc = (StateChanged)item;
-                        sw.WriteLine(sc.serialize().ToString());
-                        sw.Flush();
-                    }
-                }
+                StateChanged sc = (StateChanged)e;
+                sw.WriteLine(sc.serialize().ToString());
+                sw.Flush();
             }
         }
     }
