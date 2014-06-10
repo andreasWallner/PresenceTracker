@@ -97,7 +97,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Rectangle Fill="{Binding NewState, Converter={local:StateToColorConverter}}" HorizontalAlignment="Left" Height="10" Stroke="Transparent" Width="10" Margin="10,0,0,0"/>
+                            <Rectangle Fill="{Binding Path=NewState, Converter={local:LookupConverter}, ConverterParameter={StaticResource ResourceKey=State2ColorLookup}}" HorizontalAlignment="Left" Stroke="Transparent" Width="12" Height="12" Margin="10,0,0,0"/>
                             <TextBlock Text="{Binding Path=Time, StringFormat='{}{0:HH:mm:ss}'}" Margin="5,2"/>
                             <TextBlock Text="{Binding NewState}" Margin="5,2"/>
                         </StackPanel>
