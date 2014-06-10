@@ -12,7 +12,7 @@
             <StateChanged Time="3/3/10 08:23 PM" NewState="Logoff" />
             <StateChanged Time="4/3/14 02:21 PM" NewState="AppStart"/>
         </StateChangedCollection>
-        <CollectionViewSource x:Key="messagesByDay" Source="{Binding messages}">
+        <CollectionViewSource x:Key="messagesByDay" Source="{Binding FilteredMessages}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Time">
                     <PropertyGroupDescription.Converter>
@@ -105,6 +105,9 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <Button Content="Exit" Click="ExitButton_Click" HorizontalAlignment="Right" Margin="5" Padding="10,0" Grid.Column="0" Grid.Row="1"/>
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <CheckBox IsChecked="{Binding FilterDuringDay}" Content="filter inter-day events" VerticalAlignment="Center"/>
+            <Button Content="Exit" Click="ExitButton_Click" HorizontalAlignment="Right" Margin="5" Padding="10,0" />
+        </StackPanel>
     </Grid>
 </Window>

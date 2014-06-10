@@ -16,7 +16,8 @@ namespace PresenceTracker
     {
         public readonly string dataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/PresenceTracker";
 
-        public PresenceTrackerModel Data;
+        public PresenceTrackerViewModel Data;
+        private PresenceTrackerModel DataModel;
         private TaskbarIcon _notifyIcon;
 
         protected override void OnStartup(StartupEventArgs e)
@@ -24,10 +25,12 @@ namespace PresenceTracker
             base.OnStartup(e);
 
             checkSaveLocations();
+            
+            DataModel = new PresenceTrackerModel(dataLocation);
+            DataModel.addStateChange(DateTime.Now, State.AppStart);
 
-            Data = new PresenceTrackerModel(dataLocation);
-            Data.addStateChange(DateTime.Now, State.AppStart);
-
+            Data = new PresenceTrackerViewModel(DataModel);
+            
             //create the notifyicon (it's a resource declared in NotifyIconResources.xaml
             _notifyIcon = (TaskbarIcon)FindResource("NotifyIcon");
         }

@@ -11,7 +11,7 @@ namespace PresenceTracker
     public class PresenceTrackerModel
     {
         private ObservableCollection<StateChanged> _messages = new ObservableCollection<StateChanged>();
-        public ObservableCollection<StateChanged> messages { get { return _messages; } }
+        public ObservableCollection<StateChanged> Messages { get { return _messages; } }
 
         private DataAppender _appender;
         private SystemEventCollector _sysEventCollector;
@@ -31,7 +31,7 @@ namespace PresenceTracker
         public void addStateChange(DateTime date, State newState)
         {
             StateChanged sc = new StateChanged(DateTime.Now, newState);
-            messages.Insert(0, sc);
+            Messages.Insert(0, sc);
             _appender.append(sc);
         }
 
@@ -40,10 +40,10 @@ namespace PresenceTracker
             DateTime now = DateTime.Now;
             TimeSpan limit = new TimeSpan(10, 0, 0, 0);
 
-            for (int i = messages.Count - 1; i >= 0; i--)
+            for (int i = Messages.Count - 1; i >= 0; i--)
             {
-                if (now - messages[i].Time > limit)
-                    messages.RemoveAt(i);
+                if (now - Messages[i].Time > limit)
+                    Messages.RemoveAt(i);
             }
         }
 
