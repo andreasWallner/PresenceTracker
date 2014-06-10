@@ -14,7 +14,8 @@ namespace PresenceTracker
                 handler(sender, e);
         }
 
-        public static void Raise<T>(this EventHandler<T> ev, object sender, EventArgs e)
+        public static void Raise<T>(this EventHandler<T> ev, object sender, T e)
+            where T : EventArgs
         {
             var handler = ev;
             if (handler != null)
