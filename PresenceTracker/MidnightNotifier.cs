@@ -19,7 +19,7 @@ namespace PresenceTracker
             timer = new Timer(GetSleepTime());
             timer.Elapsed += (s, e) =>
                 {
-                    DayChanged.Raise(null, null);
+                    DayChanged.RaiseMarshalled(null, null);
                     timer.Interval = GetSleepTime();
                 };
             timer.Start();

@@ -37,7 +37,7 @@ namespace PresenceTracker
                     ea.newState = State.Suspend;
                     break;
             }
-            SessionEvent.Raise(this, ea);
+            SessionEvent.RaiseMarshalled(this, ea);
         }
 
         protected void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
@@ -56,7 +56,7 @@ namespace PresenceTracker
                     break;
             }
 
-            SessionEvent.Raise(this, ea);
+            SessionEvent.RaiseMarshalled(this, ea);
         }
 
         protected void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
@@ -81,7 +81,7 @@ namespace PresenceTracker
                     break;
             }
 
-            SessionEvent.Raise(this, ea);
+            SessionEvent.RaiseMarshalled(this, ea);
         }
     }
 }

@@ -7,8 +7,22 @@ namespace PresenceTracker
 {
     public static class EventExtensions
     {
+        public static void Raise(this EventHandler ev, object sender, EventArgs e)
+        {
+            var handler = ev;
+            if (handler != null)
+                handler(sender, e);
+        }
+
+        public static void Raise<T>(this EventHandler<T> ev, object sender, EventArgs e)
+        {
+            var handler = ev;
+            if (handler != null)
+                handler(sender, e);
+        }
+
         // Extension method which marshals events back onto the main thread
-        public static void Raise(this MulticastDelegate multicast, object sender, EventArgs args)
+        public static void RaiseMarshalled(this MulticastDelegate multicast, object sender, EventArgs args)
         {
             foreach (Delegate del in multicast.GetInvocationList())
             {
@@ -37,7 +51,7 @@ namespace PresenceTracker
             }
         }
         // Extension method which marshals actions back onto the main thread
-        public static void Raise<T>(this Action<T> action, T args)
+        public static void RaiseMarshalled<T>(this Action<T> action, T args)
         {
             // Try for WPF first
             DispatcherObject dispatcherTarget = action.Target as DispatcherObject;
