@@ -17,7 +17,7 @@ namespace PresenceTracker
             _filename = filename;
         }
 
-        public void append(dynamic e)
+        public void append(object e)
         {
             using (StreamWriter sw = File.AppendText(_filename))
             {
