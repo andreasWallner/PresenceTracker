@@ -42,10 +42,7 @@ namespace PresenceTracker
 
         void messages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (_filterDuringDay)
-            {
-                updateFilter();
-            }
+            updateFilter();
         }
 
         private void updateFilter()
